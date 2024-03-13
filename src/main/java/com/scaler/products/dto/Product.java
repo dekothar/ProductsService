@@ -1,18 +1,27 @@
 package com.scaler.products.dto;
 
 
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 
-@Getter @Setter @AllArgsConstructor @NoArgsConstructor
-public class Product {
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+public class Product extends BaseModel {
 
-private Long id;
-private String title;
-private String description;
-private double price;
-private Category category;
-private String image;
+
+    private String title;
+    private String description;
+    private double price;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    private Category category;
+    private String image;
 }

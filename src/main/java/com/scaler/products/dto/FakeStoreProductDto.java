@@ -3,7 +3,8 @@ package com.scaler.products.dto;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Getter
+@Setter
 public class FakeStoreProductDto {
 
     private Long id;
@@ -13,17 +14,17 @@ public class FakeStoreProductDto {
     private String description;
     private String image;
 
-    public Product convertToProduct(){
-        Product product=new Product();
+    public Product convertToProduct() {
+        Product product = new Product();
         product.setId(id);
         product.setTitle(title);
         product.setPrice(price);
         product.setDescription(description);
         product.setImage(image);
-        Category catela=new Category();
+        Category catela = new Category();
         catela.setTitle(category);
 
         product.setCategory(catela);
-        return  product;
+        return product;
     }
 }
