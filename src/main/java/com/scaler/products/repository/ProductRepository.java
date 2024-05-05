@@ -1,29 +1,30 @@
 package com.scaler.products.repository;
 
-import com.scaler.products.dto.Product;
+import com.scaler.products.dto.ProductDto;
 import com.scaler.products.projection.productTitleAndId;
-import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface ProductRepository extends JpaRepository<Product, Long> {
+public interface ProductRepository extends JpaRepository<ProductDto, Long> {
 
-    Product save(Product product);
+    ProductDto save(ProductDto product);
 
-    Product findByIdIs(Long id);
+    ProductDto findByIdIs(Long id);
 
-    List<Product> findAll();
+    Page<ProductDto> findAll(Pageable page);
 
-    @Query("select p from Product  p where p.category.title= :title and p.id = :id")
-    Product getParticularProductName(@Param("title") String title, @Param("id") Long id);
+    @Query("select p from ProductDto  p where p.category.title= :title and p.id = :id")
+    ProductDto getParticularProductName(@Param("title") String title, @Param("id") Long id);
 
-    @Query("select p.title as product_title,p.id as product_id from Product p where p.category.id= :categoryId")
+    @Query("select p.title as product_title,p.id as product_id from ProductDto p where p.category.id= :categoryId")
     List<productTitleAndId> getProductWithTitleAndId(@Param("categoryId") Long categoryId);
 
-    List<Product> findAllByCategory_Title(String title);
+    List<ProductDto> findAllByCategory_Title(String title, Pageable page);
 
     //List<Product> findAllByCategory_TitleLike(String title);
 

@@ -12,12 +12,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class ControllerAdvisor {
 
     @ExceptionHandler(ProductNotFoundException.class)
-    public ResponseEntity<ErrorsDto> handleExceptions(final ProductNotFoundException exception){
-
-        ErrorsDto errorDto=new ErrorsDto();
+    public ResponseEntity<ErrorsDto> handleExceptions(final ProductNotFoundException exception) {
+        ErrorsDto errorDto = new ErrorsDto();
         errorDto.setMessage(exception.getMessage());
-        ResponseEntity<ErrorsDto> errorMsg=new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
+        ResponseEntity<ErrorsDto> errorMsg = new ResponseEntity<>(errorDto, HttpStatus.NOT_FOUND);
         return errorMsg;
-
     }
 }

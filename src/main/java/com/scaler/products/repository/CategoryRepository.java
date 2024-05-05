@@ -1,13 +1,13 @@
 package com.scaler.products.repository;
 
-import com.scaler.products.dto.Category;
+import com.scaler.products.dto.CategoryDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface CategoryRepository extends JpaRepository<Category, Long> {
+public interface CategoryRepository extends JpaRepository<CategoryDto, Long> {
 
-    Category findByTitle(String categoryTitle);
+    CategoryDto findByTitle(String categoryTitle);
 
-    List<Category> findAll();
+    List<CategoryDto> findAll();
 }
