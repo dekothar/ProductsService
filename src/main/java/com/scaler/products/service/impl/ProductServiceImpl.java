@@ -22,8 +22,13 @@ import java.util.List;
 public class ProductServiceImpl implements ProductService {
 
     private static final String PRODUCT_NOT_FOUND_EXCEPTION = "The User requesting for the Given Product doesn't Exist in the System please try some Other Products";
-    private static final String title = "title";
-    private static final String price = "price";
+    private static final String TITLE = "title";
+    private static final String PRICE = "price";
+
+    private static final String TOTAL_COUNT_PRODUCT="Total No of active Products count are" + " ";
+    private static final  String EMPTY_STRING=" ";
+
+    private static final String PRODUCT_IDS="And there respective product ids are" + " ";
 
     @Autowired
     private ProductRepository productRepository;
@@ -42,8 +47,8 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public List<ProductDto> getAllProducts(final String pgNo, final String noOfRecords) {
-        Sort sortByTitle = Sort.by(title).ascending();
-        Sort sortByPrice = Sort.by(price).descending();
+        Sort sortByTitle = Sort.by(TITLE).ascending();
+        Sort sortByPrice = Sort.by(PRICE).descending();
         Sort groupSort = sortByTitle.and(sortByPrice);
         Pageable page = PageRequest.of(Integer.parseInt(pgNo), Integer.parseInt(noOfRecords), groupSort);
         return productRepository.findAll(page).get().toList();
@@ -135,10 +140,17 @@ public class ProductServiceImpl implements ProductService {
         productRepository.deleteById(id);
     }
 
-    /*@Override
+    /**
+     * This method provides following functionality
+     * 1.Retrieves the Product details based on Category Type.
+     * 2.Display all CategoryType.
+     * @param categoryType
+     * @return list of Products
+     */
+    @Override
     public List<ProductDto> getProductInCategory(String categoryType) {
-        return null;
-    }*/
+        return productRepository.findAllByCategory_TitleLike(categoryType);
+    }
 
     /**
      * This method provides following functionality
@@ -167,7 +179,7 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * This method provides following functionality
-     * 1.Retrieves the product details based on Id from the database if present.
+     * 1.Retrieves the product details based on id from the database if present.
      * 2.else throw the productNotFound Exception.
      * 3.Updates all the Product and category details.
      * 4.Save the details in database.
@@ -198,21 +210,23 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.save(existingProduct);
     }
 
+    /**
+     * This method provides following functionality
+     * 1.Retrieves all the Products details from the database.
+     * 2.Using Stream Api filter out the Product Details which are active.
+     * 3.Store the respective ProductIds for the Active Products.
+     * 3.Display no of Products which are active with their ProductID.
+     * @return String
+     */
     @Override
     public String countProduct() {
-        List<ProductDto> products = productRepository.findAll();
-        StringBuilder product_id = new StringBuilder();
-        int count = 0;
-        List<String> activeProductId = new ArrayList<>();
-        for (ProductDto product : products) {
-            count = productRepository.countProductsByIdAndActive(product.getId(), product.getActive());
-            if (product.getActive() == 1) {
-                activeProductId.add(product.getId().toString());
-            }
-
-        }
-        product_id.append("Total No of products is ").append(count).append(" product id").append(activeProductId);
-        return product_id.toString();
+        List<ProductDto> activeProducts=productRepository.findAll().stream().filter(x->x.getActive()==1).toList();
+        long activeProductsCount = activeProducts.stream().count();
+        StringBuilder result = new StringBuilder();
+        List<Long> product_id=new ArrayList<>();
+        activeProducts.forEach(x->product_id.add(x.getId()));
+        result.append(TOTAL_COUNT_PRODUCT).append(activeProductsCount).append(EMPTY_STRING).append(PRODUCT_IDS).append(product_id);
+        return result.toString();
     }
 
     /**

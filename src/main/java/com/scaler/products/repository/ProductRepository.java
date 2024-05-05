@@ -26,7 +26,7 @@ public interface ProductRepository extends JpaRepository<ProductDto, Long> {
 
     List<ProductDto> findAllByCategory_Title(String title, Pageable page);
 
-    //List<Product> findAllByCategory_TitleLike(String title);
+    List<ProductDto> findAllByCategory_TitleLike(String title);
 
     int countProductsByIdAndActive(Long id, int active);
 

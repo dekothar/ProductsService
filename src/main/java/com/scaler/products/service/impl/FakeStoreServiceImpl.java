@@ -126,7 +126,7 @@ public class FakeStoreServiceImpl implements ProductService {
         return null;
     }
 
-    /*@Override
+    @Override
     public List<ProductDto> getProductInCategory(String categoryType) {
         List<ProductDto> productList = new ArrayList<>();
         FakeStoreProductDto[] fakeStoreProductDtos = restTemplate.getForEntity(BASE_URL + "category/" + categoryType, FakeStoreProductDto[].class).getBody();
@@ -141,7 +141,7 @@ public class FakeStoreServiceImpl implements ProductService {
 
         return productList;
 
-    }*/
+    }
 
     /**
      * This method provides following functionality

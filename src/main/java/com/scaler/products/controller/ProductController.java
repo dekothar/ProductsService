@@ -28,7 +28,7 @@ public class ProductController {
     private RestTemplate restTemplate;
 
     /**
-     * This Controller used to find the Product details based on product Id
+     * This Controller used to find the Product details based on product id
      * End Points-> GET/products/{id}
      */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
@@ -49,7 +49,7 @@ public class ProductController {
     }
 
     /**
-     * This Controller used to delete the Product details based on product Id.
+     * This Controller used to delete the Product details based on product id.
      * End Points-> DELETE/producs/{id}
      * @param id
      * @return
