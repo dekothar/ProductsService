@@ -121,27 +121,37 @@ public class FakeStoreServiceImpl implements ProductService {
         restTemplate.delete(BASE_URL + "/" + id, this.getProductById(id));
     }
 
+    /**
+     * This method provides following functionality
+     * 1.Retrieves the Product details based on Category Type.
+     * 2.Display all CategoryType.
+     * @param categoryType
+     * @return list of Products
+     */
     @Override
     public List<ProductDto> getProductInCategory(String categoryType, int pgNo, int noOfRecords) {
         return null;
     }
 
-    /*@Override
+    /**
+     * This method provides following functionality
+     * 1.Retrieves the Product details based on Category Type by calling external Api ie FakeStoreService Api.
+     * 2.Display all CategoryType.
+     * @param categoryType
+     * @return list of Products
+     */
+    @Override
     public List<ProductDto> getProductInCategory(String categoryType) {
         List<ProductDto> productList = new ArrayList<>();
         FakeStoreProductDto[] fakeStoreProductDtos = restTemplate.getForEntity(BASE_URL + "category/" + categoryType, FakeStoreProductDto[].class).getBody();
-
-
         for (FakeStoreProductDto fakeStoreProductDto : fakeStoreProductDtos) {
             if (fakeStoreProductDto.getCategory().equalsIgnoreCase(categoryType)) {
                 ProductDto prod = fakeStoreProductDto.convertToProduct();
                 productList.add(prod);
             }
         }
-
         return productList;
-
-    }*/
+    }
 
     /**
      * This method provides following functionality
