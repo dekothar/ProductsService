@@ -1,8 +1,10 @@
 package com.scaler.products.controller;
 
+import com.scaler.products.authenticate.AuthenticateProduct;
 import com.scaler.products.dto.CategoryDto;
 import com.scaler.products.dto.ProductDto;
 import com.scaler.products.dto.CreateProductRequestDto;
+import com.scaler.products.dto.UserDto;
 import com.scaler.products.exception.ProductNotFoundException;
 import com.scaler.products.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,13 +29,24 @@ public class ProductController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private AuthenticateProduct authenticateProduct;
+
     /**
      * This Controller used to find the Product details based on product id
      * End Points-> GET/products/{id}
      */
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    public ProductDto getProductById(@PathVariable("id") Long id) throws ProductNotFoundException {
-        return productService.getProductById(id);
+    public ResponseEntity<ProductDto> getProductById(@PathVariable("id") Long id, @RequestHeader String authToken) throws ProductNotFoundException {
+
+        UserDto userdto=authenticateProduct.authenticateProduct(authToken);
+        if(userdto==null){
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+        // User will need to be authenticated before seeing the Product details
+        ProductDto dto=productService.getProductById(id);
+
+        return new ResponseEntity<>(dto, HttpStatus.OK);
 
     }
 
@@ -58,7 +71,7 @@ public class ProductController {
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ProductDto deleteProduct(@PathVariable("id") Long id) throws ProductNotFoundException {
         productService.deleteProduct(id);
-        ProductDto product = getProductById(id);
+        ProductDto product = productService.getProductById(id);
         // on making the Product as inactive ie deleting the Product
         if (product.getActive() == 1) {
             product.setActive(0);
