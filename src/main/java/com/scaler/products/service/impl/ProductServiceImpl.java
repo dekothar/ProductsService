@@ -2,6 +2,7 @@ package com.scaler.products.service.impl;
 
 import com.scaler.products.dto.CategoryDto;
 import com.scaler.products.dto.ProductDto;
+import com.scaler.products.dto.UserDto;
 import com.scaler.products.exception.ProductNotFoundException;
 import com.scaler.products.repository.CategoryRepository;
 import com.scaler.products.repository.ProductRepository;
@@ -12,6 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,6 +37,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private RestTemplate restTemplate;
 
     /**
      * This method provides following functionality
@@ -74,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     public ProductDto getProductById(Long productId) throws ProductNotFoundException {
+        restTemplate.getForObject("http://UserDetails/users/details/1", UserDto.class);
         return productRepository.findByIdIs(productId);
     }
 
